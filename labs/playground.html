@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Evidence Quest Lab</title>
+    <style>
+      :root { --ink:#1f2933; --muted:#5f6b76; --line:#d8dee4; --accent:#1f4e79; --soft:#eef4fa; --warn:#7a3d00; }
+      * { box-sizing: border-box; }
+      body { margin:0; color:var(--ink); font-family:"Times New Roman","SimSun",serif; line-height:1.65; background:#fff; }
+      main { width:min(1040px, calc(100% - 32px)); margin:0 auto; padding:32px 0 48px; }
+      header { border-bottom:1px solid var(--line); margin-bottom:24px; padding-bottom:18px; }
+      h1 { margin:0 0 8px; font-size:30px; } h2 { margin:0 0 12px; font-size:21px; } p { margin-top:0; }
+      .muted { color:var(--muted); }
+      .workspace { display:grid; grid-template-columns:.9fr 1.1fr; gap:22px; align-items:start; }
+      section { border:1px solid var(--line); padding:18px; background:#fff; }
+      label { display:block; margin-bottom:8px; font-weight:600; }
+      textarea { width:100%; min-height:92px; resize:vertical; border:1px solid var(--line); padding:12px; font:inherit; }
+      button { margin-top:12px; border:1px solid var(--accent); background:var(--accent); color:#fff; padding:9px 14px; font:inherit; cursor:pointer; }
+      .examples { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+      .examples button { margin:0; color:var(--accent); background:#fff; }
+      .steps { display:grid; gap:12px; }
+      .chunk { border-left:4px solid var(--accent); background:var(--soft); padding:12px; margin-bottom:10px; }
+      .score { color:var(--muted); font-size:14px; }
+      .answer { border:1px solid var(--line); padding:14px; margin-top:8px; background:#fff; }
+      .refusal { color:var(--warn); font-weight:600; }
+      .checklist li { margin-bottom:6px; }
+      @media (max-width:780px) { .workspace { grid-template-columns:1fr; } }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>AI Evidence Quest Lab</h1>
+        <p class="muted">用“校园资料问答助手”理解 RAG：先检索证据，再组织回答；资料不足时拒答。</p>
+      </header>
+      <div class="workspace">
+        <section>
+          <h2>1. 提出问题</h2>
+          <label for="query">输入一个校园规则问题</label>
+          <textarea id="query">图书馆周末什么时候开放？</textarea>
+          <button id="ask">检索并回答</button>
+          <div class="examples" aria-label="示例问题">
+            <button data-q="学生一次最多可以借几本书？">借书数量</button>
+            <button data-q="社团活动怎么申请教室？">社团申请</button>
+            <button data-q="实验室可以一个人进入吗？">实验室安全</button>
+            <button data-q="学校有没有火星基地？">无证据问题</button>
+          </div>
+          <h2 style="margin-top:22px;">课堂检查</h2>
+          <ul class="checklist">
+            <li>回答是否引用了资料？</li>
+            <li>引用资料是否真的支持结论？</li>
+            <li>如果没有资料，系统有没有承认不知道？</li>
+          </ul>
+        </section>
+        <section class="steps">
+          <div><h2>2. 检索到的证据</h2><div id="evidence"></div></div>
+          <div><h2>3. 生成回答</h2><div id="answer" class="answer"></div></div>
+        </section>
+      </div>
+    </main>
+    <script>
+      const chunks = [
+        { id:"A1", title:"图书馆开放时间", text:"学校图书馆周一至周五 8:00-21:00 开放，周六 9:00-17:00 开放，周日闭馆整理。", keys:["图书馆","开放","周末","周六","周日","时间"] },
+        { id:"A2", title:"图书借阅规则", text:"学生凭校园卡一次最多借阅 5 本图书，普通图书借期 30 天，可续借 1 次。", keys:["借书","借阅","图书","几本","校园卡","续借"] },
+        { id:"B1", title:"社团活动教室申请", text:"社团活动需提前 3 个工作日提交教室申请，说明活动主题、人数、时间和指导教师。", keys:["社团","活动","教室","申请","指导教师"] },
+        { id:"C1", title:"实验室安全", text:"学生进入实验室须有教师或实验员在场。未经许可，不得单独进入实验室或操作设备。", keys:["实验室","安全","一个人","教师","设备","许可"] },
+        { id:"D1", title:"电子设备使用", text:"信息技术课可按教师要求使用笔记本电脑。课堂外使用电子设备须遵守年级管理规定。", keys:["电脑","电子设备","信息技术","课堂","规定"] }
+      ];
+      const queryEl = document.querySelector("#query");
+      const evidenceEl = document.querySelector("#evidence");
+      const answerEl = document.querySelector("#answer");
+      function scoreChunk(query, chunk) {
+        const compact = query.toLowerCase();
+        return chunk.keys.reduce((score, key) => compact.includes(key.toLowerCase()) ? score + 1 : score, 0);
+      }
+      function search(query) {
+        return chunks.map(chunk => ({ ...chunk, score: scoreChunk(query, chunk) })).sort((a, b) => b.score - a.score).slice(0, 3);
+      }
+      function render() {
+        const results = search(queryEl.value.trim());
+        evidenceEl.innerHTML = results.map(item => `<article class="chunk"><strong>[${item.id}] ${item.title}</strong><div class="score">检索分数：${item.score}</div><p>${item.text}</p></article>`).join("");
+        const best = results[0];
+        if (!best || best.score === 0) {
+          answerEl.innerHTML = `<p class="refusal">资料库中没有找到足够证据，不能可靠回答这个问题。</p><p>可以尝试改写问题，加入更具体的关键词，例如地点、时间、对象或规则名称。</p>`;
+          return;
+        }
+        answerEl.innerHTML = `<p>根据资料 <strong>[${best.id}] ${best.title}</strong>，${best.text}</p><p class="muted">请检查：这条资料是否真的支持上面的结论？有没有回答超出资料范围？</p>`;
+      }
+      document.querySelector("#ask").addEventListener("click", render);
+      document.querySelectorAll("[data-q]").forEach(button => {
+        button.addEventListener("click", () => { queryEl.value = button.dataset.q; render(); });
+      });
+      render();
+    </script>
+  </body>
+</html>

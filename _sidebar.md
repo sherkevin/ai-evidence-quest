@@ -1,5 +1,3 @@
-# Summary
-
 - [课程总览](README.md)
 - [第 0 章：课程地图与项目成品](chapters/00-course-map.md)
 - [第 1 章：从问题到资料](chapters/01-question-and-data.md)
