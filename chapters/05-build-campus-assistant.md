@@ -2,7 +2,7 @@
 
 ## 项目结构
 
-本章对应 [互动实验](../labs/playground.html)。它用浏览器里的 JavaScript 实现最小 RAG 流程。
+本章对应 [互动实验](https://sherkevin.github.io/ai-evidence-quest/labs/playground.html)。它用浏览器里的 JavaScript 实现最小 RAG 流程。
 
 核心数据结构是一组资料卡片：
 
