@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AI Evidence Quest</title>
+    <title>证据问答与智能体项目课</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" />
     <style>
       :root { --theme-color: #1f4e79; }
@@ -16,15 +16,18 @@
     </style>
   </head>
   <body>
-    <div id="app">Loading course...</div>
+    <div id="app">正在载入课程...</div>
     <script>
       window.$docsify = {
-        name: "AI Evidence Quest",
-        repo: "sherkevin/ai-evidence-quest",
+        name: "证据问答与智能体项目课",
         loadSidebar: "sidebar.md",
         subMaxLevel: 2,
         auto2top: true,
-        search: "auto"
+        search: {
+          paths: "auto",
+          placeholder: "搜索本书",
+          noData: "没有找到相关内容"
+        }
       };
     </script>
     <script src="https://cdn.jsdelivr.net/npm/docsify@4"></script>

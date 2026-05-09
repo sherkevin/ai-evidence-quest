@@ -1,22 +1,22 @@
-# 开源许可与课程资源
+# 致谢与许可
 
-本页用于记录本教材使用的公开课程资源和许可信息。正文教学路径不依赖本页阅读。
+本页用于记录本教材中保留的公开课程资源、代码示例和许可信息。正文教学路径可以独立阅读；本页主要用于溯源、备课和合规发布。
 
-## 纳入资源
+## 资源说明
 
-| 资源 | Star | License | 用途 |
-| --- | --- | --- | --- |
-| [microsoft/ai-agents-for-beginners](https://github.com/microsoft/ai-agents-for-beginners) | 约 61k | MIT | 仓库主体：AI Agents、Tool Use、Agentic RAG、多智能体、MCP/A2A、安全与生产部署 |
-| [microsoft/generative-ai-for-beginners](https://github.com/microsoft/generative-ai-for-beginners) | 约 110k | MIT | 生成式 AI、RAG、向量数据库、负责任 AI、提示词与安全章节 |
-| [jamwithai/production-agentic-rag-course](https://github.com/jamwithai/production-agentic-rag-course) | 约 5.8k | MIT | RAG 工程架构、混合检索、监控、缓存、Agentic RAG 代码阅读 |
-| [datawhalechina/easy-vecdb](https://github.com/datawhalechina/easy-vecdb) | 约 279 | Apache-2.0 | 向量数据库与 ANN 检索的中文参考 |
+| 资源 | 许可协议 | 在本仓库中的作用 |
+| --- | --- | --- |
+| [智能体入门课程](https://github.com/microsoft/ai-agents-for-beginners) | MIT | 智能体、工具调用、检索增强生成、多智能体、协议、安全与部署等代码阅读材料 |
+| [生成式人工智能入门课程](https://github.com/microsoft/generative-ai-for-beginners) | MIT | 生成式人工智能、检索增强生成、向量数据库、负责任人工智能与安全主题的备课材料 |
+| [生产级检索增强生成课程](https://github.com/jamwithai/production-agentic-rag-course) | MIT | 检索增强生成工程架构、混合检索、监控、缓存与智能检索代码阅读材料 |
+| [向量数据库中文教程](https://github.com/datawhalechina/easy-vecdb) | Apache-2.0 | 向量数据库与近似检索的中文参考材料 |
 
-## 仓库内资源位置
+## 仓库内位置
 
-- `00-course-setup/` 至 `18-securing-ai-agents/`
-- `source-project/microsoft-generative-ai-for-beginners/`
-- `source-project/production-agentic-rag-course/`
+- `teacher-resources/course-code/`
+- `teacher-resources/source-projects/`
+- `teacher-resources/attribution/`
 
 ## 使用边界
 
-教材正文为面向课程场景重新组织的教学材料；上方目录保留原始 README、License、图片、Notebook 和代码片段，用于溯源、备课与进阶阅读。
+教材正文为面向高中课程场景重新组织的教学材料；上方目录保留公开资源的 README、许可文本、图片、Notebook 和代码片段，用于溯源、备课与进阶阅读。再发布或二次使用时，应继续保留相应许可文本与来源说明。

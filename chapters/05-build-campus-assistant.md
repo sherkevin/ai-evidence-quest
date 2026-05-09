@@ -2,7 +2,7 @@
 
 ## 项目结构
 
-本章对应 [互动实验](https://sherkevin.github.io/ai-evidence-quest/labs/playground.html)。它用浏览器里的 JavaScript 实现最小 RAG 流程。
+本章对应 [互动实验](https://sherkevin.github.io/ai-evidence-quest/labs/playground.html)。它用浏览器脚本实现最小检索增强生成流程。
 
 核心数据结构是一组资料卡片：
 
@@ -36,7 +36,7 @@
 
 ### 挑战
 
-设计一个 badcase 表格，记录系统答错的问题、错误原因和改进方法。
+设计一个失败案例表格，记录系统答错的问题、错误原因和改进方法。
 
 | 问题 | 错误类型 | 改进方法 |
 | --- | --- | --- |
@@ -45,4 +45,4 @@
 
 ## 展示要求
 
-展示时不要只演示“成功回答”，还要展示一次拒答和一次 badcase 改进。
+展示时不要只演示“成功回答”，还要展示一次拒答和一次失败案例改进。

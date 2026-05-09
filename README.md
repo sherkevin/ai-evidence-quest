@@ -1,51 +1,47 @@
-# AI Evidence Quest：智能体与可信问答项目课
+# 证据问答与智能体项目课
 
-这是一套以智能体课程为主体的高中 AI 项目教材。仓库主路径保留完整 lesson、notebook、代码示例和图示资源，课堂展示只在首页、目录与导读层做必要整理，避免把厚课程压缩成几页说明。
+这是一套面向高中人工智能课程、科创社团和校本项目的项目式教材。课程围绕一个清晰作品展开：做出一个能够查找资料、给出引用、判断证据是否充分，并在越界问题上保持克制的“校园资料问答智能体”。
 
-课程主线是：**工具调用、Agentic RAG、多智能体协作、可信智能体、安全与生产部署**。学习者最终完成一个“校园资料智能体”：它能调用检索工具、检查资料来源、生成带证据回答，并在证据不足或问题越界时拒答。
+本书不把人工智能教学停留在“会向模型提问”。课程从问题、资料、检索、引用、拒答、评测和展示逐步展开，让学习者理解一个可信问答系统为什么需要证据、边界和持续改进。前半部分适合课堂教学，后半部分适合项目课和社团继续深入。
 
-## 课程主体
+## 课程主线
 
-| 单元 | 主题 | 主要材料 |
+| 模块 | 章节 | 核心问题 | 项目产出 |
+| --- | --- | --- | --- |
+| 基础篇 | 第 0-4 章 | 什么样的回答才算有证据 | 资料卡片、检索记录、拒答规则 |
+| 实现篇 | 第 5-6 章 | 怎样做出一个可运行原型 | 浏览器问答实验、失败案例表 |
+| 进阶篇 | 第 7-10 章 | 怎样把原型推进到真实项目 | 元数据、向量检索、重排、评测集 |
+| 展示篇 | 第 11-12 章 | 怎样把课程作品讲清楚 | 展示脚本、项目档案、评价量规 |
+
+## 最终作品
+
+结课作品是一份可以打开、可以演示、可以解释的项目档案，至少包含：
+
+- 一个可运行的校园资料问答页面；
+- 一组经过切分和标注的资料卡片；
+- 一套检索、引用和拒答逻辑；
+- 十个测试问题和对应结果；
+- 失败案例、原因分析和改进记录；
+- 一份课堂展示脚本。
+
+## 推荐学习路径
+
+| 课型 | 推荐章节 | 适合场景 |
 | --- | --- | --- |
-| 00 | 课程环境 | `00-course-setup/` |
-| 01 | AI Agents 入门 | `01-intro-to-ai-agents/` |
-| 02 | 智能体框架 | `02-explore-agentic-frameworks/` |
-| 03 | Agentic Design Patterns | `03-agentic-design-patterns/` |
-| 04 | Tool Use | `04-tool-use/` |
-| 05 | Agentic RAG | `05-agentic-rag/` |
-| 06 | Trustworthy Agents | `06-building-trustworthy-agents/` |
-| 07 | Planning Design | `07-planning-design/` |
-| 08 | Multi-Agent | `08-multi-agent/` |
-| 09 | Metacognition | `09-metacognition/` |
-| 10 | Production Agents | `10-ai-agents-production/` |
-| 11 | MCP / A2A Protocols | `11-agentic-protocols/` |
-| 12 | Context Engineering | `12-context-engineering/` |
-| 13 | Agent Memory | `13-agent-memory/` |
-| 14 | Microsoft Agent Framework | `14-microsoft-agent-framework/` |
-| 15 | Browser Use | `15-browser-use/` |
-| 18 | Securing AI Agents | `18-securing-ai-agents/` |
-
-## 高中课堂路径
-
-这套课不要求高中阶段完整跑通所有云服务。课堂建议采用“三层路径”：
-
-| 层级 | 学习目标 | 推荐单元 |
-| --- | --- | --- |
-| 入门课 | 认识智能体、工具调用、证据回答 | 01、03、04、05 |
-| 项目课 | 做一个校园资料智能体 | 05、06、07、08、12 |
-| 科创社团 | 多智能体、MCP、浏览器代理、安全 | 08、10、11、14、15、18 |
+| 入门体验 | 第 0-5 章 | 2-6 课时人工智能入门课 |
+| 项目实践 | 第 0-10 章 | 校本课程、项目化学习、研究性学习 |
+| 科创拓展 | 全书与附录资源 | 社团、竞赛准备、个人作品集 |
 
 ## 互动实验室
 
-[证据检索实验室](https://sherkevin.github.io/ai-evidence-quest/labs/playground.html) 是本仓库的轻量课堂前端，用来快速演示资料卡片、混合检索、拒答阈值和引用记录。正式项目代码和 Notebook 以各 lesson 目录为准。
-
-## 原始课程与许可
-
-本仓库主体材料来自 Microsoft 官方课程 [AI Agents for Beginners](https://github.com/microsoft/ai-agents-for-beginners)（MIT License，约 61k stars），并保留其 lesson 结构、notebook 与代码示例。生成式 AI、RAG 和向量数据库补充材料见 `source-project/microsoft-generative-ai-for-beginners/`。许可与来源见 [开源许可与课程资源](LICENSES.md)。
+[证据检索实验室](https://sherkevin.github.io/ai-evidence-quest/labs/playground.html) 用来演示资料卡片、关键词检索、相似度排序、引用记录和拒答阈值。它不是最终答案，而是课程中用于观察算法行为的最小可运行模型。
 
 ## 阅读方式
 
 在线阅读：[https://sherkevin.github.io/ai-evidence-quest/](https://sherkevin.github.io/ai-evidence-quest/)
 
-本仓库采用 Docsify / GitBook 兼容目录组织。`SUMMARY.md` 可供 GitBook 类工具读取，`sidebar.md` 供在线站点使用。
+本仓库采用在线电子书目录组织。`SUMMARY.md` 可供电子书工具读取，`sidebar.md` 供在线站点使用。
+
+## 透明说明
+
+本教材的课程主线、课堂任务、评价方式和项目展示结构面向高中场景重新组织。仓库中也保留了若干公开课程资源、代码示例和许可文本，供教师备课、代码阅读和进阶实践使用。相关说明见 [致谢与许可](LICENSES.md)。
