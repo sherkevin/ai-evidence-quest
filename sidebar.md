@@ -1,15 +1,14 @@
 - [导读](README.md)
-- [上游项目与授权说明](UPSTREAM.md)
 
-- 第一编：读懂真实 RAG 系统
+- 第一编：可信问答系统
   - [课程地图](chapters/00-course-map.md)
-  - [从生产级 RAG 课程拆出高中项目](chapters/01-upstream-rag-system.md)
+  - [RAG 系统地图](chapters/01-rag-system-map.md)
   - [问题、资料与证据](chapters/01-question-and-data.md)
   - [检索为什么先于生成](chapters/02-search-and-similarity.md)
   - [从检索到 RAG 流水线](chapters/03-rag-pipeline.md)
 
-- 第二编：校园资料问答助手
-  - [高中化改造路线](chapters/02-curriculum-path.md)
+- 第二编：证据检索实验
+  - [课程项目路线](chapters/02-learning-path.md)
   - [引用、拒答与边界](chapters/04-citation-and-refusal.md)
   - [构建校园资料助手](chapters/05-build-campus-assistant.md)
   - [评价与扩展](chapters/06-evaluation-and-extension.md)
@@ -27,5 +26,6 @@
   - [学习者任务单](docs/student-worksheet.md)
   - [评价量规](docs/rubric.md)
   - [参考资料](references.md)
+  - [开源许可与课程资源](LICENSES.md)
 
-- [互动实验](https://sherkevin.github.io/ai-evidence-quest/labs/playground.html ':target=_blank')
+- [互动实验室](https://sherkevin.github.io/ai-evidence-quest/labs/playground.html ':target=_blank')

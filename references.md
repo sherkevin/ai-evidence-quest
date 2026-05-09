@@ -1,9 +1,10 @@
 # 参考资料
 
-## 主底座与许可
+## 课程资源
 
-- [jamwithai/production-agentic-rag-course](https://github.com/jamwithai/production-agentic-rag-course)：MIT License。本教材的 RAG 工程路线、架构拆解和进阶代码阅读主要基于该项目改造。
-- [datawhalechina/easy-vecdb](https://github.com/datawhalechina/easy-vecdb)：Apache-2.0。向量数据库与 ANN 检索章节参考其中文组织方式。
+- [microsoft/generative-ai-for-beginners](https://github.com/microsoft/generative-ai-for-beginners)：MIT License。生成式 AI、提示词、RAG、向量数据库、负责任 AI 与安全章节。
+- [jamwithai/production-agentic-rag-course](https://github.com/jamwithai/production-agentic-rag-course)：MIT License。RAG 工程架构、混合检索、监控、缓存与 Agentic RAG 代码阅读。
+- [datawhalechina/easy-vecdb](https://github.com/datawhalechina/easy-vecdb)：Apache-2.0。向量数据库与 ANN 检索的中文参考。
 
 ## 调研参考
 

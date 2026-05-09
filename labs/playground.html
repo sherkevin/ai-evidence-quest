@@ -5,93 +5,345 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>AI Evidence Quest Lab</title>
     <style>
-      :root { --ink:#1f2933; --muted:#5f6b76; --line:#d8dee4; --accent:#1f4e79; --soft:#eef4fa; --warn:#7a3d00; }
+      :root {
+        --ink: #18212f;
+        --muted: #5f6b7a;
+        --line: #d8dee8;
+        --paper: #ffffff;
+        --soft: #f4f7fb;
+        --accent: #1f6f8b;
+        --good: #257a4f;
+        --warn: #a46012;
+        --bad: #a43f3f;
+      }
       * { box-sizing: border-box; }
-      body { margin:0; color:var(--ink); font-family:"Times New Roman","SimSun",serif; line-height:1.65; background:#fff; }
-      main { width:min(1040px, calc(100% - 32px)); margin:0 auto; padding:32px 0 48px; }
-      header { border-bottom:1px solid var(--line); margin-bottom:24px; padding-bottom:18px; }
-      h1 { margin:0 0 8px; font-size:30px; } h2 { margin:0 0 12px; font-size:21px; } p { margin-top:0; }
-      .muted { color:var(--muted); }
-      .workspace { display:grid; grid-template-columns:.9fr 1.1fr; gap:22px; align-items:start; }
-      section { border:1px solid var(--line); padding:18px; background:#fff; }
-      label { display:block; margin-bottom:8px; font-weight:600; }
-      textarea { width:100%; min-height:92px; resize:vertical; border:1px solid var(--line); padding:12px; font:inherit; }
-      button { margin-top:12px; border:1px solid var(--accent); background:var(--accent); color:#fff; padding:9px 14px; font:inherit; cursor:pointer; }
-      .examples { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
-      .examples button { margin:0; color:var(--accent); background:#fff; }
-      .steps { display:grid; gap:12px; }
-      .chunk { border-left:4px solid var(--accent); background:var(--soft); padding:12px; margin-bottom:10px; }
-      .score { color:var(--muted); font-size:14px; }
-      .answer { border:1px solid var(--line); padding:14px; margin-top:8px; background:#fff; }
-      .refusal { color:var(--warn); font-weight:600; }
-      .checklist li { margin-bottom:6px; }
-      @media (max-width:780px) { .workspace { grid-template-columns:1fr; } }
+      body {
+        margin: 0;
+        font-family: "Inter", "Noto Sans SC", "Microsoft YaHei", Arial, sans-serif;
+        color: var(--ink);
+        background: #eef3f8;
+      }
+      header {
+        padding: 28px clamp(18px, 4vw, 48px);
+        background: linear-gradient(135deg, #f8fbff, #e7f0f8);
+        border-bottom: 1px solid var(--line);
+      }
+      h1 { margin: 0 0 8px; font-size: clamp(28px, 4vw, 42px); letter-spacing: 0; }
+      h2 { margin: 0 0 14px; font-size: 18px; }
+      h3 { margin: 0 0 10px; font-size: 15px; }
+      p { line-height: 1.7; }
+      .muted { color: var(--muted); margin: 0; }
+      main {
+        display: grid;
+        grid-template-columns: minmax(280px, 360px) 1fr;
+        gap: 18px;
+        padding: 18px;
+        max-width: 1320px;
+        margin: 0 auto;
+      }
+      section, aside {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+      }
+      .stack { display: grid; gap: 14px; }
+      .step {
+        display: grid;
+        grid-template-columns: 28px 1fr;
+        gap: 10px;
+        align-items: start;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--soft);
+      }
+      .badge {
+        width: 28px;
+        height: 28px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: var(--accent);
+        color: white;
+        font-weight: 700;
+      }
+      textarea, input, select {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 10px;
+        font: inherit;
+        background: white;
+      }
+      textarea { min-height: 150px; resize: vertical; }
+      button {
+        border: 1px solid #155a73;
+        background: var(--accent);
+        color: white;
+        border-radius: 6px;
+        padding: 10px 12px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      button.secondary {
+        background: white;
+        color: var(--accent);
+      }
+      .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+      .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+      .controls { display: grid; gap: 12px; }
+      .control {
+        display: grid;
+        gap: 6px;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+      .control label { display: flex; justify-content: space-between; font-size: 14px; color: var(--muted); }
+      .results { display: grid; gap: 10px; }
+      .chunk {
+        border: 1px solid var(--line);
+        border-left: 5px solid var(--accent);
+        border-radius: 8px;
+        padding: 12px;
+        background: white;
+      }
+      .chunk.low { border-left-color: var(--bad); opacity: .78; }
+      .meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+      .pill {
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: #edf3f8;
+        color: #385267;
+        font-size: 12px;
+      }
+      .scorebar {
+        height: 8px;
+        background: #e8edf3;
+        border-radius: 999px;
+        overflow: hidden;
+        margin-top: 8px;
+      }
+      .scorebar span { display: block; height: 100%; background: var(--accent); }
+      .answer {
+        min-height: 160px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        background: #fbfdff;
+      }
+      .answer.good { border-color: #b8d8c8; background: #f3fbf6; }
+      .answer.warn { border-color: #e5c792; background: #fff9ed; }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+      }
+      th, td {
+        border-bottom: 1px solid var(--line);
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th { color: var(--muted); font-weight: 600; }
+      @media (max-width: 900px) {
+        main { grid-template-columns: 1fr; }
+        .grid { grid-template-columns: 1fr; }
+      }
     </style>
   </head>
   <body>
+    <header>
+      <h1>证据检索实验室</h1>
+      <p class="muted">围绕资料建设、混合检索、证据引用和拒答阈值完成一轮可信问答实验。</p>
+    </header>
     <main>
-      <header>
-        <h1>AI Evidence Quest Lab</h1>
-        <p class="muted">用“校园资料问答助手”理解 RAG：先检索证据，再组织回答；资料不足时拒答。</p>
-      </header>
-      <div class="workspace">
+      <aside class="stack">
+        <div class="step"><div class="badge">1</div><div><h3>提出问题</h3><p class="muted">选择一个校园问题，或输入自己的问题。</p></div></div>
+        <div class="step"><div class="badge">2</div><div><h3>调整检索策略</h3><p class="muted">比较关键词、语义相似、来源可靠度和时间因素。</p></div></div>
+        <div class="step"><div class="badge">3</div><div><h3>检查回答</h3><p class="muted">回答必须带引用；证据不足时必须拒答。</p></div></div>
         <section>
-          <h2>1. 提出问题</h2>
-          <label for="query">输入一个校园规则问题</label>
-          <textarea id="query">图书馆周末什么时候开放？</textarea>
-          <button id="ask">检索并回答</button>
-          <div class="examples" aria-label="示例问题">
-            <button data-q="学生一次最多可以借几本书？">借书数量</button>
-            <button data-q="社团活动怎么申请教室？">社团申请</button>
-            <button data-q="实验室可以一个人进入吗？">实验室安全</button>
-            <button data-q="学校有没有火星基地？">无证据问题</button>
+          <h2>资料卡片编辑器</h2>
+          <p class="muted">每行一条资料，格式：编号 | 标题 | 正文 | 来源可靠度0-1 | 更新时间YYYY-MM-DD | 标签</p>
+          <textarea id="corpusInput"></textarea>
+          <div class="row">
+            <button id="loadCorpus">更新资料库</button>
+            <button class="secondary" id="resetCorpus">恢复示例</button>
           </div>
-          <h2 style="margin-top:22px;">课堂检查</h2>
-          <ul class="checklist">
-            <li>回答是否引用了资料？</li>
-            <li>引用资料是否真的支持结论？</li>
-            <li>如果没有资料，系统有没有承认不知道？</li>
-          </ul>
         </section>
-        <section class="steps">
-          <div><h2>2. 检索到的证据</h2><div id="evidence"></div></div>
-          <div><h2>3. 生成回答</h2><div id="answer" class="answer"></div></div>
+      </aside>
+      <div class="stack">
+        <section>
+          <h2>1. 问题与实验参数</h2>
+          <div class="row">
+            <button class="secondary" data-q="学生一次最多可以借几本书，借多久？">借书规则</button>
+            <button class="secondary" data-q="社团周五晚上可以申请教室吗？">社团教室</button>
+            <button class="secondary" data-q="实验室能不能一个人进去做项目？">实验室安全</button>
+            <button class="secondary" data-q="学校有没有火星基地？">无证据问题</button>
+          </div>
+          <div style="margin-top:12px">
+            <input id="question" value="学生一次最多可以借几本书，借多久？" />
+          </div>
+          <div class="grid" style="margin-top:14px">
+            <div class="controls">
+              <div class="control"><label>关键词权重 <span id="kwVal">3</span></label><input id="kw" type="range" min="0" max="5" value="3"></div>
+              <div class="control"><label>语义权重 <span id="semVal">3</span></label><input id="sem" type="range" min="0" max="5" value="3"></div>
+            </div>
+            <div class="controls">
+              <div class="control"><label>来源可靠度 <span id="srcVal">2</span></label><input id="src" type="range" min="0" max="5" value="2"></div>
+              <div class="control"><label>时间新鲜度 <span id="freshVal">1</span></label><input id="fresh" type="range" min="0" max="5" value="1"></div>
+            </div>
+          </div>
+          <div class="grid" style="margin-top:14px">
+            <div class="control"><label>Top-K <span id="topkVal">3</span></label><input id="topk" type="range" min="1" max="5" value="3"></div>
+            <div class="control"><label>拒答阈值 <span id="thresholdVal">5</span></label><input id="threshold" type="range" min="1" max="12" value="5"></div>
+          </div>
+        </section>
+        <section class="grid">
+          <div>
+            <h2>2. 检索排序</h2>
+            <div id="results" class="results"></div>
+          </div>
+          <div>
+            <h2>3. 带证据回答</h2>
+            <div id="answer" class="answer"></div>
+            <h2 style="margin-top:18px">4. 实验记录</h2>
+            <table>
+              <thead><tr><th>指标</th><th>当前结果</th></tr></thead>
+              <tbody id="audit"></tbody>
+            </table>
+          </div>
         </section>
       </div>
     </main>
     <script>
-      const chunks = [
-        { id:"A1", title:"图书馆开放时间", text:"学校图书馆周一至周五 8:00-21:00 开放，周六 9:00-17:00 开放，周日闭馆整理。", keys:["图书馆","开放","周末","周六","周日","时间"] },
-        { id:"A2", title:"图书借阅规则", text:"学生凭校园卡一次最多借阅 5 本图书，普通图书借期 30 天，可续借 1 次。", keys:["借书","借阅","图书","几本","校园卡","续借"] },
-        { id:"B1", title:"社团活动教室申请", text:"社团活动需提前 3 个工作日提交教室申请，说明活动主题、人数、时间和指导教师。", keys:["社团","活动","教室","申请","指导教师"] },
-        { id:"C1", title:"实验室安全", text:"学生进入实验室须有教师或实验员在场。未经许可，不得单独进入实验室或操作设备。", keys:["实验室","安全","一个人","教师","设备","许可"] },
-        { id:"D1", title:"电子设备使用", text:"信息技术课可按教师要求使用笔记本电脑。课堂外使用电子设备须遵守年级管理规定。", keys:["电脑","电子设备","信息技术","课堂","规定"] }
+      const sampleCorpus = [
+        "A1 | 图书馆开放时间 | 学校图书馆周一至周五 8:00-21:00 开放，周六 9:00-17:00 开放，周日闭馆整理。 | 0.95 | 2026-03-01 | 图书馆,开放,时间",
+        "A2 | 图书借阅规则 | 学生凭校园卡一次最多借阅 5 本图书，普通图书借期 30 天，可续借 1 次。 | 0.95 | 2026-03-01 | 图书馆,借阅,校园卡",
+        "B1 | 社团教室申请 | 社团活动需提前 3 个工作日提交教室申请，说明活动主题、人数、时间和指导教师。 | 0.88 | 2026-02-20 | 社团,教室,申请",
+        "B2 | 晚间活动规则 | 周五 18:00-20:30 可申请社团活动教室，须有指导教师在场。 | 0.86 | 2026-02-20 | 社团,周五,晚间",
+        "C1 | 实验室安全 | 学生进入实验室须有教师或实验员在场。未经许可，不得单独进入实验室或操作设备。 | 0.98 | 2026-01-15 | 实验室,安全,设备",
+        "D1 | 校园卡补办 | 校园卡遗失后可在行政楼一层服务窗口补办，需携带身份证明。 | 0.76 | 2025-09-10 | 校园卡,补办,服务"
       ];
-      const queryEl = document.querySelector("#query");
-      const evidenceEl = document.querySelector("#evidence");
-      const answerEl = document.querySelector("#answer");
-      function scoreChunk(query, chunk) {
-        const compact = query.toLowerCase();
-        return chunk.keys.reduce((score, key) => compact.includes(key.toLowerCase()) ? score + 1 : score, 0);
+      const semanticHints = {
+        "借": ["借阅", "图书", "校园卡", "续借", "借期"],
+        "书": ["图书", "借阅", "图书馆"],
+        "社团": ["社团", "教室", "活动", "指导教师"],
+        "晚上": ["晚间", "18:00", "20:30", "周五"],
+        "实验": ["实验室", "安全", "设备", "教师"],
+        "一个人": ["单独", "许可", "在场"],
+        "火星": ["火星", "基地"]
+      };
+      const els = {
+        corpusInput: document.querySelector("#corpusInput"),
+        question: document.querySelector("#question"),
+        results: document.querySelector("#results"),
+        answer: document.querySelector("#answer"),
+        audit: document.querySelector("#audit")
+      };
+      let corpus = [];
+      function parseCorpus(text) {
+        return text.split(/\n+/).map(line => {
+          const parts = line.split("|").map(x => x.trim());
+          if (parts.length < 6) return null;
+          const [id, title, body, reliability, date, tags] = parts;
+          return { id, title, body, reliability: Number(reliability), date, tags: tags.split(",").map(x => x.trim()) };
+        }).filter(Boolean);
       }
-      function search(query) {
-        return chunks.map(chunk => ({ ...chunk, score: scoreChunk(query, chunk) })).sort((a, b) => b.score - a.score).slice(0, 3);
+      function tokenize(text) {
+        return text.toLowerCase().replace(/[，。！？、：；（）]/g, " ").split(/\s+/).flatMap(part => {
+          const chars = Array.from(part).filter(ch => ch.trim());
+          return part.length > 2 ? [part, ...chars] : chars;
+        });
       }
-      function render() {
-        const results = search(queryEl.value.trim());
-        evidenceEl.innerHTML = results.map(item => `<article class="chunk"><strong>[${item.id}] ${item.title}</strong><div class="score">检索分数：${item.score}</div><p>${item.text}</p></article>`).join("");
-        const best = results[0];
-        if (!best || best.score === 0) {
-          answerEl.innerHTML = `<p class="refusal">资料库中没有找到足够证据，不能可靠回答这个问题。</p><p>可以尝试改写问题，加入更具体的关键词，例如地点、时间、对象或规则名称。</p>`;
-          return;
+      function semanticScore(q, item) {
+        let score = 0;
+        Object.entries(semanticHints).forEach(([key, hints]) => {
+          if (q.includes(key)) {
+            hints.forEach(h => { if ((item.body + item.tags.join("")).includes(h)) score += 1; });
+          }
+        });
+        return score;
+      }
+      function freshness(date) {
+        const days = (new Date("2026-05-09") - new Date(date)) / 86400000;
+        return Math.max(0, 1 - days / 365);
+      }
+      function rank() {
+        const q = els.question.value.trim();
+        const qTokens = tokenize(q);
+        const weights = ["kw", "sem", "src", "fresh", "topk", "threshold"].reduce((acc, id) => {
+          acc[id] = Number(document.querySelector("#" + id).value);
+          document.querySelector("#" + id + "Val").textContent = acc[id];
+          return acc;
+        }, {});
+        const ranked = corpus.map(item => {
+          const text = item.title + item.body + item.tags.join("");
+          const keyword = qTokens.reduce((sum, token) => sum + (text.includes(token) ? 1 : 0), 0);
+          const semantic = semanticScore(q, item);
+          const source = item.reliability * 3;
+          const fresh = freshness(item.date) * 3;
+          const score = keyword * weights.kw + semantic * weights.sem + source * weights.src + fresh * weights.fresh;
+          return { ...item, keyword, semantic, source, fresh, score };
+        }).sort((a, b) => b.score - a.score);
+        const top = ranked.slice(0, weights.topk);
+        renderResults(top, weights.threshold);
+        renderAnswer(q, top, weights.threshold);
+      }
+      function renderResults(items, threshold) {
+        const max = Math.max(1, ...items.map(x => x.score));
+        els.results.innerHTML = items.map(item => `
+          <article class="chunk ${item.score < threshold ? "low" : ""}">
+            <strong>[${item.id}] ${item.title}</strong>
+            <p>${item.body}</p>
+            <div class="scorebar"><span style="width:${Math.round(item.score / max * 100)}%"></span></div>
+            <div class="meta">
+              <span class="pill">总分 ${item.score.toFixed(1)}</span>
+              <span class="pill">关键词 ${item.keyword}</span>
+              <span class="pill">语义 ${item.semantic}</span>
+              <span class="pill">来源 ${item.reliability}</span>
+              <span class="pill">更新 ${item.date}</span>
+            </div>
+          </article>
+        `).join("");
+      }
+      function renderAnswer(q, items, threshold) {
+        const evidence = items.filter(x => x.score >= threshold);
+        if (!evidence.length) {
+          els.answer.className = "answer warn";
+          els.answer.innerHTML = `<strong>拒答</strong><p>资料库中没有找到足够证据，不能可靠回答“${q}”。建议补充资料或改写问题，加入对象、时间、地点或规则名称。</p>`;
+        } else {
+          els.answer.className = "answer good";
+          const refs = evidence.slice(0, 2);
+          els.answer.innerHTML = `<strong>回答</strong><p>${makeAnswer(q, refs)}</p><p><strong>引用：</strong>${refs.map(x => `[${x.id}] ${x.title}`).join("；")}</p>`;
         }
-        answerEl.innerHTML = `<p>根据资料 <strong>[${best.id}] ${best.title}</strong>，${best.text}</p><p class="muted">请检查：这条资料是否真的支持上面的结论？有没有回答超出资料范围？</p>`;
+        els.audit.innerHTML = `
+          <tr><td>可用证据数</td><td>${evidence.length}</td></tr>
+          <tr><td>最高检索分</td><td>${items[0] ? items[0].score.toFixed(1) : "0"}</td></tr>
+          <tr><td>失败类型</td><td>${evidence.length ? "暂未触发" : "资料缺失 / 召回不足 / 问题越界"}</td></tr>
+          <tr><td>下一步</td><td>${evidence.length ? "检查引用是否足够具体，记录一次误召回案例。" : "补充资料卡片或降低阈值后重新比较。"}</td></tr>
+        `;
       }
-      document.querySelector("#ask").addEventListener("click", render);
-      document.querySelectorAll("[data-q]").forEach(button => {
-        button.addEventListener("click", () => { queryEl.value = button.dataset.q; render(); });
-      });
-      render();
+      function makeAnswer(q, refs) {
+        const text = refs.map(x => x.body).join(" ");
+        if (q.includes("借")) return "根据资料，学生凭校园卡一次最多借阅 5 本图书，普通图书借期 30 天，可续借 1 次。";
+        if (q.includes("社团") || q.includes("教室")) return "社团活动需提前 3 个工作日提交教室申请；周五 18:00-20:30 可申请活动教室，且须有指导教师在场。";
+        if (q.includes("实验")) return "进入实验室须有教师或实验员在场，未经许可不得单独进入实验室或操作设备。";
+        return text;
+      }
+      document.querySelectorAll("[data-q]").forEach(btn => btn.addEventListener("click", () => { els.question.value = btn.dataset.q; rank(); }));
+      document.querySelectorAll("input").forEach(input => input.addEventListener("input", rank));
+      document.querySelector("#loadCorpus").addEventListener("click", () => { corpus = parseCorpus(els.corpusInput.value); rank(); });
+      document.querySelector("#resetCorpus").addEventListener("click", () => { els.corpusInput.value = sampleCorpus.join("\n"); corpus = parseCorpus(els.corpusInput.value); rank(); });
+      els.corpusInput.value = sampleCorpus.join("\n");
+      corpus = parseCorpus(els.corpusInput.value);
+      rank();
     </script>
   </body>
 </html>
