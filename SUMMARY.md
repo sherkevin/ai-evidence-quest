@@ -1,6 +1,17 @@
 # 目录
 
 * [导读](README.md)
+* [总览：从问答助手到可信智能体](deep/00-full-book-map.md)
+* [第 1 单元：智能体系统](deep/01-agent-system.md)
+* [第 2 单元：工具调用](deep/02-tool-use.md)
+* [第 3 单元：证据问答与检索增强生成](deep/03-evidence-rag.md)
+* [第 4 单元：可信边界、引用与拒答](deep/04-trustworthy-boundary.md)
+* [第 5 单元：规划与任务分解](deep/05-planning.md)
+* [第 6 单元：多角色智能体协作](deep/06-multi-agent.md)
+* [第 7 单元：反思、评测与失败案例库](deep/07-reflection-evaluation.md)
+* [第 8 单元：上下文工程与记忆](deep/08-context-memory.md)
+* [第 9 单元：协议、接口与浏览器任务](deep/09-protocol-browser.md)
+* [第 10 单元：生产化、安全与结课作品](deep/10-production-security.md)
 * [第 0 章：课程地图与项目成品](chapters/00-course-map.md)
 * [项目路线](chapters/02-learning-path.md)
 * [第 1 章：从问题到资料](chapters/01-question-and-data.md)
